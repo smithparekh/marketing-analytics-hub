@@ -1,0 +1,1529 @@
+<title>Marketing Analytics Hub</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<style>
+/* === TOKENS ===
+   Layout: sidebar-nav + main content area, responsive collapse to top-tabs
+*/
+:root {
+  --bg: #f5f6fa;
+  --surface: #ffffff;
+  --surface-2: #f0f2f8;
+  --border: #e2e6f0;
+  --fg: #1a1d2e;
+  --fg-2: #5a6080;
+  --fg-3: #9199b8;
+  --accent: #3b6ef5;
+  --accent-dim: #dde6ff;
+  --green: #12a564;
+  --green-dim: #d4f5e5;
+  --red: #e03e4c;
+  --red-dim: #fde8ea;
+  --amber: #d97706;
+  --amber-dim: #fef3cd;
+  --purple: #7c4dff;
+  --purple-dim: #ede8ff;
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --r: 10px;
+  --r-sm: 6px;
+  --shadow: 0 1px 4px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.04);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d1117;
+    --surface: #161b27;
+    --surface-2: #1e2438;
+    --border: #272d42;
+    --fg: #e8ecf5;
+    --fg-2: #8892b0;
+    --fg-3: #4a5270;
+    --accent: #5b87ff;
+    --accent-dim: #1a2756;
+    --green: #22c579;
+    --green-dim: #0d2a1c;
+    --red: #f05060;
+    --red-dim: #2a0f13;
+    --amber: #f59e0b;
+    --amber-dim: #2c1f05;
+    --purple: #9c6dff;
+    --purple-dim: #1e1040;
+    --shadow: 0 1px 4px rgba(0,0,0,.3), 0 4px 20px rgba(0,0,0,.2);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d1117;
+  --surface: #161b27;
+  --surface-2: #1e2438;
+  --border: #272d42;
+  --fg: #e8ecf5;
+  --fg-2: #8892b0;
+  --fg-3: #4a5270;
+  --accent: #5b87ff;
+  --accent-dim: #1a2756;
+  --green: #22c579;
+  --green-dim: #0d2a1c;
+  --red: #f05060;
+  --red-dim: #2a0f13;
+  --amber: #f59e0b;
+  --amber-dim: #2c1f05;
+  --purple: #9c6dff;
+  --purple-dim: #1e1040;
+  --shadow: 0 1px 4px rgba(0,0,0,.3), 0 4px 20px rgba(0,0,0,.2);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--fg);
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-left: max(0px, env(safe-area-inset-left, 0px));
+  padding-right: max(0px, env(safe-area-inset-right, 0px));
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+/* === LAYOUT === */
+.app { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+.main {
+  flex: 1;
+  min-width: 0;
+  padding: 28px max(20px, env(safe-area-inset-right, 0px)) 48px max(20px, env(safe-area-inset-left, 0px));
+  max-width: 1100px;
+}
+
+/* === SIDEBAR === */
+.logo {
+  padding: 20px 18px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.logo-mark {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--fg);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.logo-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: inline-block;
+}
+.logo-sub {
+  font-size: 11px;
+  color: var(--fg-3);
+  margin-top: 3px;
+  letter-spacing: .3px;
+}
+.nav-section {
+  padding: 14px 10px 6px;
+}
+.nav-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  padding: 0 8px;
+  margin-bottom: 4px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 10px;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  color: var(--fg-2);
+  font-size: 13.5px;
+  font-weight: 500;
+  transition: background .15s, color .15s;
+  user-select: none;
+}
+.nav-item:hover { background: var(--surface-2); color: var(--fg); }
+.nav-item.active { background: var(--accent-dim); color: var(--accent); }
+.nav-icon { font-size: 15px; width: 18px; text-align: center; flex-shrink: 0; }
+.theme-toggle {
+  margin-top: auto;
+  padding: 14px 18px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.theme-btn {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 12px;
+  color: var(--fg-2);
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: all .15s;
+}
+.theme-btn:hover { color: var(--fg); background: var(--border); }
+
+/* === HEADER === */
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  gap: 16px;
+}
+.page-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--fg);
+  text-wrap: balance;
+}
+.page-sub {
+  font-size: 13px;
+  color: var(--fg-2);
+  margin-top: 4px;
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 9px;
+  border-radius: 20px;
+  letter-spacing: .3px;
+  white-space: nowrap;
+}
+.badge-green { background: var(--green-dim); color: var(--green); }
+.badge-red { background: var(--red-dim); color: var(--red); }
+.badge-amber { background: var(--amber-dim); color: var(--amber); }
+.badge-accent { background: var(--accent-dim); color: var(--accent); }
+.badge-purple { background: var(--purple-dim); color: var(--purple); }
+
+/* === SECTIONS === */
+.section { display: none; }
+.section.active { display: block; }
+
+/* === KPI TILES === */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 14px;
+  margin-bottom: 28px;
+}
+.kpi-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 16px 18px;
+  box-shadow: var(--shadow);
+}
+.kpi-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .7px;
+  color: var(--fg-3);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.kpi-value {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--fg);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.kpi-delta {
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 6px;
+}
+.kpi-delta.up { color: var(--green); }
+.kpi-delta.down { color: var(--red); }
+.kpi-delta.neutral { color: var(--fg-3); }
+
+/* === METRIC CARDS === */
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.metric-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.metric-head {
+  padding: 14px 18px 10px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+.metric-name {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--fg);
+}
+.metric-full {
+  font-size: 11.5px;
+  color: var(--fg-3);
+  margin-top: 2px;
+}
+.metric-body {
+  padding: 14px 18px;
+}
+.metric-def {
+  font-size: 13px;
+  color: var(--fg-2);
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+.formula-box {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 9px 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent);
+  margin-bottom: 12px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.example-row {
+  background: var(--accent-dim);
+  border-radius: var(--r-sm);
+  padding: 8px 12px;
+  font-size: 12.5px;
+  color: var(--fg-2);
+  margin-bottom: 10px;
+}
+.example-row strong { color: var(--fg); }
+.benchmarks {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+.bm-chip {
+  font-size: 11.5px;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+.bm-good { background: var(--green-dim); color: var(--green); }
+.bm-warn { background: var(--amber-dim); color: var(--amber); }
+.bm-bad  { background: var(--red-dim); color: var(--red); }
+
+/* === FUNNEL === */
+.funnel-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 24px;
+  margin-bottom: 28px;
+  box-shadow: var(--shadow);
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--fg);
+  margin-bottom: 4px;
+}
+.section-sub {
+  font-size: 12.5px;
+  color: var(--fg-3);
+  margin-bottom: 18px;
+}
+.funnel-wrap {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+.funnel-canvas-wrap { flex: 1; min-width: 0; }
+.funnel-legend { width: 200px; flex-shrink: 0; }
+.funnel-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 12.5px;
+}
+.funnel-legend-item:last-child { border-bottom: none; }
+.fl-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+.fl-name { color: var(--fg-2); flex: 1; }
+.fl-val { font-family: var(--font-mono); font-size: 12px; color: var(--fg); font-weight: 500; }
+.fl-rate { font-size: 11px; color: var(--fg-3); }
+
+/* === TABLE === */
+.table-wrap { overflow-x: auto; margin-bottom: 28px; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+thead th {
+  text-align: left;
+  padding: 10px 14px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  color: var(--fg-3);
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+tbody td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--fg-2);
+  vertical-align: top;
+}
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: var(--surface-2); }
+td strong { color: var(--fg); }
+td .mono { font-family: var(--font-mono); font-size: 12px; color: var(--accent); }
+
+/* === CHANNEL CHART === */
+.chart-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.chart-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+.chart-card canvas { display: block; width: 100%; }
+
+/* === GLOSSARY === */
+.glossary-filter {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+  align-items: center;
+}
+.gf-btn {
+  padding: 5px 13px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--fg-2);
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all .15s;
+  font-family: var(--font-body);
+}
+.gf-btn:hover, .gf-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.glossary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+.glossary-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 14px 16px;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: border-color .15s;
+}
+.glossary-card:hover { border-color: var(--accent); }
+.gc-abbr {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--fg);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 3px;
+}
+.gc-full { font-size: 11px; color: var(--fg-3); margin-bottom: 6px; }
+.gc-def { font-size: 12.5px; color: var(--fg-2); line-height: 1.55; }
+
+/* === MOBILE NAV === */
+.mobile-tabs {
+  display: none;
+  overflow-x: auto;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 max(16px, env(safe-area-inset-left, 0px));
+  gap: 4px;
+  white-space: nowrap;
+  scrollbar-width: none;
+}
+.mobile-tabs::-webkit-scrollbar { display: none; }
+.mob-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 12px 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--fg-3);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all .15s;
+  white-space: nowrap;
+}
+.mob-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+@media (max-width: 700px) {
+  .app { flex-direction: column; }
+  .sidebar { display: none; }
+  .mobile-tabs { display: flex; }
+  .main { padding: 16px max(16px, env(safe-area-inset-right, 0px)) 40px max(16px, env(safe-area-inset-left, 0px)); }
+  .kpi-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .metric-grid { grid-template-columns: 1fr; }
+  .chart-grid { grid-template-columns: 1fr; }
+  .funnel-wrap { flex-direction: column; }
+  .funnel-legend { width: 100%; }
+}
+</style>
+
+<div class="app">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-mark"><span class="logo-dot"></span>Marketing Analytics</div>
+      <div class="logo-sub">KPIs · Formulas · Benchmarks</div>
+    </div>
+    <nav class="nav-section">
+      <div class="nav-label">Overview</div>
+      <div class="nav-item active" onclick="switchSection('overview',this)">
+        <span class="nav-icon">📊</span> Dashboard
+      </div>
+    </nav>
+    <nav class="nav-section">
+      <div class="nav-label">Metrics</div>
+      <div class="nav-item" onclick="switchSection('acquisition',this)">
+        <span class="nav-icon">🎯</span> Acquisition
+      </div>
+      <div class="nav-item" onclick="switchSection('revenue',this)">
+        <span class="nav-icon">💰</span> Revenue & ROI
+      </div>
+      <div class="nav-item" onclick="switchSection('conversion',this)">
+        <span class="nav-icon">🔄</span> Conversion
+      </div>
+      <div class="nav-item" onclick="switchSection('retention',this)">
+        <span class="nav-icon">🔒</span> Retention
+      </div>
+      <div class="nav-item" onclick="switchSection('engagement',this)">
+        <span class="nav-icon">💡</span> Engagement
+      </div>
+    </nav>
+    <nav class="nav-section">
+      <div class="nav-label">Reference</div>
+      <div class="nav-item" onclick="switchSection('funnel',this)">
+        <span class="nav-icon">⬇️</span> Marketing Funnel
+      </div>
+      <div class="nav-item" onclick="switchSection('glossary',this)">
+        <span class="nav-icon">📖</span> Glossary
+      </div>
+    </nav>
+    <div class="theme-toggle">
+      <span style="font-size:12px;color:var(--fg-3)">Theme</span>
+      <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">🌙 Dark</button>
+    </div>
+  </aside>
+
+  <!-- Mobile tabs -->
+  <div class="mobile-tabs" id="mobileTabs">
+    <div class="mob-tab active" onclick="switchSection('overview',this)">📊 Overview</div>
+    <div class="mob-tab" onclick="switchSection('acquisition',this)">🎯 Acquisition</div>
+    <div class="mob-tab" onclick="switchSection('revenue',this)">💰 Revenue</div>
+    <div class="mob-tab" onclick="switchSection('conversion',this)">🔄 Conversion</div>
+    <div class="mob-tab" onclick="switchSection('retention',this)">🔒 Retention</div>
+    <div class="mob-tab" onclick="switchSection('engagement',this)">💡 Engagement</div>
+    <div class="mob-tab" onclick="switchSection('funnel',this)">⬇️ Funnel</div>
+    <div class="mob-tab" onclick="switchSection('glossary',this)">📖 Glossary</div>
+  </div>
+
+  <main class="main">
+
+    <!-- === OVERVIEW === -->
+    <div class="section active" id="section-overview">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Marketing Analytics Hub</div>
+          <div class="page-sub">Key metrics, formulas, benchmarks — everything a DA needs to know</div>
+        </div>
+        <span class="badge badge-accent">4.9 YOE Reference</span>
+      </div>
+
+      <!-- KPI snapshot -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label"><span>💸</span> CAC</div>
+          <div class="kpi-value">₹420</div>
+          <div class="kpi-delta up">↓ 8% vs last month</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label"><span>📈</span> ROAS</div>
+          <div class="kpi-value">4.2×</div>
+          <div class="kpi-delta up">↑ 0.3× vs last month</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label"><span>🔄</span> CVR</div>
+          <div class="kpi-value">3.8%</div>
+          <div class="kpi-delta down">↓ 0.2% vs last month</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label"><span>♻️</span> LTV:CAC</div>
+          <div class="kpi-value">5.1×</div>
+          <div class="kpi-delta up">↑ 0.4× vs last month</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label"><span>📣</span> CTR</div>
+          <div class="kpi-value">2.1%</div>
+          <div class="kpi-delta neutral">— same as last month</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label"><span>🔁</span> Churn</div>
+          <div class="kpi-value">4.2%</div>
+          <div class="kpi-delta up">↓ 0.5% vs last month</div>
+        </div>
+      </div>
+
+      <!-- Channel comparison chart -->
+      <div class="funnel-section">
+        <div class="section-title">Channel Performance — CAC vs ROAS</div>
+        <div class="section-sub">Example data · Replace with your Metabase query results</div>
+        <canvas id="channelChart" height="200"></canvas>
+      </div>
+
+      <!-- Quick reference table -->
+      <div class="section-title" style="margin-bottom:8px">Quick Metrics Reference</div>
+      <div class="section-sub" style="margin-bottom:16px">All key formulas at a glance</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th>Formula</th>
+              <th>Ideal Direction</th>
+              <th>Category</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>CAC</strong></td><td><span class="mono">Total Ad Spend ÷ New Customers</span></td><td><span class="badge badge-green">Lower ↓</span></td><td><span class="badge badge-accent">Acquisition</span></td></tr>
+            <tr><td><strong>ROAS</strong></td><td><span class="mono">Revenue from Ads ÷ Ad Spend</span></td><td><span class="badge badge-green">Higher ↑</span></td><td><span class="badge badge-accent">Revenue</span></td></tr>
+            <tr><td><strong>ROI</strong></td><td><span class="mono">(Revenue − Cost) ÷ Cost × 100</span></td><td><span class="badge badge-green">Higher ↑</span></td><td><span class="badge badge-accent">Revenue</span></td></tr>
+            <tr><td><strong>LTV / CLV</strong></td><td><span class="mono">AOV × Purchase Freq × Lifespan</span></td><td><span class="badge badge-green">Higher ↑</span></td><td><span class="badge badge-accent">Revenue</span></td></tr>
+            <tr><td><strong>CTR</strong></td><td><span class="mono">Clicks ÷ Impressions × 100</span></td><td><span class="badge badge-green">Higher ↑</span></td><td><span class="badge badge-accent">Acquisition</span></td></tr>
+            <tr><td><strong>CVR</strong></td><td><span class="mono">Conversions ÷ Visitors × 100</span></td><td><span class="badge badge-green">Higher ↑</span></td><td><span class="badge badge-accent">Conversion</span></td></tr>
+            <tr><td><strong>CPC</strong></td><td><span class="mono">Ad Spend ÷ Total Clicks</span></td><td><span class="badge badge-green">Lower ↓</span></td><td><span class="badge badge-accent">Acquisition</span></td></tr>
+            <tr><td><strong>CPM</strong></td><td><span class="mono">Ad Spend ÷ Impressions × 1000</span></td><td><span class="badge badge-green">Lower ↓</span></td><td><span class="badge badge-accent">Acquisition</span></td></tr>
+            <tr><td><strong>Churn Rate</strong></td><td><span class="mono">Lost Customers ÷ Start Customers × 100</span></td><td><span class="badge badge-red">Lower ↓</span></td><td><span class="badge badge-amber">Retention</span></td></tr>
+            <tr><td><strong>NPS</strong></td><td><span class="mono">% Promoters − % Detractors</span></td><td><span class="badge badge-green">Higher ↑</span></td><td><span class="badge badge-amber">Retention</span></td></tr>
+            <tr><td><strong>Bounce Rate</strong></td><td><span class="mono">Single-page Sessions ÷ All Sessions × 100</span></td><td><span class="badge badge-red">Lower ↓</span></td><td><span class="badge badge-accent">Conversion</span></td></tr>
+            <tr><td><strong>DAU/MAU</strong></td><td><span class="mono">Daily Active ÷ Monthly Active × 100</span></td><td><span class="badge badge-green">Higher ↑</span></td><td><span class="badge badge-purple">Engagement</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- === ACQUISITION === -->
+    <div class="section" id="section-acquisition">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Acquisition Metrics</div>
+          <div class="page-sub">How efficiently you bring in users and traffic</div>
+        </div>
+      </div>
+      <div class="metric-grid">
+
+        <div class="metric-card">
+          <div class="metric-head">
+            <div><div class="metric-name">CAC</div><div class="metric-full">Customer Acquisition Cost</div></div>
+            <span class="badge badge-accent">Core</span>
+          </div>
+          <div class="metric-body">
+            <p class="metric-def">The total cost to acquire one new paying customer. Includes all marketing + sales spend: ads, tools, salaries, agency fees.</p>
+            <div class="formula-box">CAC = Total Marketing & Sales Spend ÷ New Customers Acquired</div>
+            <div class="example-row">Spend ₹1,00,000 → get 200 customers → <strong>CAC = ₹500</strong></div>
+            <div style="font-size:12px;color:var(--fg-3);margin-bottom:6px">Benchmarks (e-commerce):</div>
+            <div class="benchmarks">
+              <span class="bm-chip bm-good">Good: &lt;₹400</span>
+              <span class="bm-chip bm-warn">Avg: ₹400–800</span>
+              <span class="bm-chip bm-bad">High: &gt;₹800</span>
+            </div>
+            <div style="font-size:12px;color:var(--fg-3);margin-top:10px">⚠️ Always compare CAC vs LTV — a high CAC is fine if LTV is 3–5× higher.</div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-head">
+            <div><div class="metric-name">CPC</div><div class="metric-full">Cost Per Click</div></div>
+            <span class="badge badge-accent">Paid</span>
+          </div>
+          <div class="metric-body">
+            <p class="metric-def">How much you pay for each click on your ad. Primary metric for search (Google) and social (Meta) campaigns. Lower is better, but only if those clicks convert.</p>
+            <div class="formula-box">CPC = Total Ad Spend ÷ Total Clicks</div>
+            <div class="example-row">Spend ₹10,000 → 500 clicks → <strong>CPC = ₹20</strong></div>
+            <div class="benchmarks">
+              <span class="bm-chip bm-good">Google Search: ₹15–40</span>
+              <span class="bm-chip bm-warn">Meta: ₹5–20</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-head">
+            <div><div class="metric-name">CPM</div><div class="metric-full">Cost Per Mille (1000 Impressions)</div></div>
+            <span class="badge badge-accent">Awareness</span>
+          </div>
+          <div class="metric-body">
+            <p class="metric-def">Cost to show your ad 1,000 times. Used for brand awareness campaigns where you want maximum reach rather than direct clicks.</p>
+            <div class="formula-box">CPM = (Ad Spend ÷ Total Impressions) × 1000</div>
+            <div class="example-row">Spend ₹5,000 → 2,00,000 impressions → <strong>CPM = ₹25</strong></div>
+            <div class="benchmarks">
+              <span class="bm-chip bm-good">Display: ₹15–30</span>
+              <span class="bm-chip bm-warn">Video: ₹40–80</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-head">
+            <div><div class="metric-name">CTR</div><div class="metric-full">Click-Through Rate</div></div>
+            <span class="badge badge-accent">Engagement</span>
+          </div>
+          <div class="metric-body">
+            <p class="metric-def">Percentage of people who clicked your ad after seeing it. Measures how compelling your creative/copy is. Low CTR = audience mismatch or weak creative.</p>
+            <div class="formula-box">CTR = (Total Clicks ÷ Total Impressions) × 100</div>
+            <div class="example-row">500 clicks ÷ 25,000 impressions = <strong>CTR = 2%</strong></div>
+            <div class="benchmarks">
+              <span class="bm-chip bm-bad">Poor: &lt;1%</span>
+              <span class="bm-chip bm-warn">Avg: 1–2%</span>
+              <span class="bm-chip bm-good">Good: &gt;3%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-head">
+            <div><div class="metric-name">CPL</div><div class="metric-full">Cost Per Lead</div></div>
+            <span class="badge badge-purple">Lead Gen</span>
+          </div>
+          <div class="metric-body">
+            <p class="metric-def">How much it costs to acquire one lead (someone who shows interest — fills a form, signs up, etc). Mid-funnel metric before they become a customer.</p>
+            <div class="formula-box">CPL = Total Ad Spend ÷ Total Leads Generated</div>
+            <div class="example-row">₹50,000 spend → 250 leads → <strong>CPL = ₹200</strong></div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-head">
+            <div><div class="metric-name">Organic vs Paid Ratio</div><div class="metric-full">Traffic Source Mix</div></div>
+            <span class="badge badge-purple">Mix</span>
+          </div>
+          <div class="metric-body">
+            <p class="metric-def">Ratio of organic (SEO, direct, referral) traffic vs paid traffic. A healthy organic ratio reduces CAC over time. Over-dependence on paid = fragile growth.</p>
+            <div class="formula-box">Organic % = Organic Sessions ÷ Total Sessions × 100</div>
+            <div class="benchmarks">
+              <span class="bm-chip bm-good">Healthy: 60%+ organic</span>
+              <span class="bm-chip bm-warn">At risk: &lt;30% organic</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- === REVENUE & ROI === -->
+    <div class="section" id="section-revenue">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Revenue & ROI Metrics</div>
+          <div class="page-sub">How marketing spend translates to money made</div>
+        </div>
+      </div>
+      <div class="metric-grid">
+
+        <div class="metric-card">
+          <div class="metric-head">
+            <div><div class="metric-name">ROAS</div><div class="metric-full">Return on Ad Spend</div></div>
+            <span class="badge badge-green">Core</span>
+          </div>
+          <div class="metric-body">
+            <p class="metric-def">Revenue generated for every ₹1 spent on ads. Most direct measure of campaign efficiency. "4× ROAS" means ₹4 revenue for every ₹1 spent.</p>
+            <div class="formula-box">ROAS = Revenue from Ads ÷ Ad Spend</div>
+            <div class="example-row">Revenue ₹4,00,000 ÷ Spend ₹1,00,000 = <strong>ROAS 4.0×</strong></div>
+            <div class="benchmarks">
+              <span class="bm-chip bm-bad">Break-even: ~2×</span>
+              <span class="bm-chip bm-warn">Good: 3–4×</span>
+              <span class="bm-chip bm-good">Excellent: 5×+</span>
+            </div>
+            <div style="font-size:12px;color:var(--fg-3);margin-top:10px">⚠️ ROAS ≠ ROI. ROAS ignores product COGS, fulfilment, and overhead. ROAS of 4× with 50% margins might still lose money.</div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-head">
+            <div><div class="metric-name">ROI</div><div class="metric-full">Return on Investment</div></div>
+            <span class="badge badge-green">Core</span>
+          </div>
+          <div class="metric-body">
+            <p class="metric-def">Net profit as a percentage of total investment. More complete than ROAS — factors in all costs. The true profitability measure.</p>
+            <div class="formula-box">ROI = (Net Profit ÷ Total Cost) × 100</div>
+            <div class="example-row">Profit ₹60,000 ÷ Spend ₹1,00,000 = <strong>ROI = 60%</strong></div>
+            <div class="benchmarks">
+              <span class="bm-chip bm-bad">Poor: &lt;10%</span>
+              <span class="bm-chip bm-warn">Avg: 10–50%</span>
+              <span class="bm-chip bm-good">Strong: 50%+</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-head">
+            <div><div class="metric-name">LTV / CLV</div><div class="metric-full">Lifetime Value / Customer LTV</div></div>
+            <span class="badge badge-green">Strategic</span>
+          </div>
+          <div class="metric-body">
+            <p class="metric-def">Total revenue expected from a customer over their entire relationship with you. Tells you how much you can afford to spend to acquire them.</p>
+            <div class="formula-box">LTV = AOV × Purchase Frequency × Customer Lifespan</div>
+            <div class="example-row">AOV ₹500 × 4/yr × 3 yrs = <strong>LTV = ₹6,000</strong></div>
+            <div style="font-size:12px;color:var(--fg-3);margin-top:6px">LTV:CAC ratio is the North Star. Aim for 3:1 minimum.</div>
+            <div class="benchmarks">
+              <span class="bm-chip bm-bad">Danger: LTV:CAC &lt;1×</span>
+              <span class="bm-chip bm-warn">Viable: 1–3×</span>
+              <span class="bm-chip bm-good">Healthy: 3×+</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-head">
+            <div><div class="metric-name">MER</div><div class="metric-full">Marketing Efficiency Ratio</div></div>
+            <span class="badge badge-amber">Blended</span>
+          </div>
+          <div class="metric-body">
+            <p class="metric-def">Blended ROAS across ALL channels (paid + organic + email). Unlike platform ROAS, it gives you the true full-picture return. Increasingly preferred over ROAS in multi-channel brands.</p>
+            <div class="formula-box">MER = Total Revenue ÷ Total Marketing Spend</div>
+            <div class="example-row">Total Revenue ₹50L ÷ Total Spend ₹10L = <strong>MER = 5×</strong></div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-head">
+            <div><div class="metric-name">AOV</div><div class="metric-full">Average Order Value</div></div>
+            <span class="badge badge-accent">Revenue</span>
+          </div>
+          <div class="metric-body">
+            <p class="metric-def">Average amount spent per transaction. Increasing AOV is often cheaper than reducing CAC. Upsell, cross-sell, and bundling all improve AOV.</p>
+            <div class="formula-box">AOV = Total Revenue ÷ Number of Orders</div>
+            <div class="example-row">₹5,00,000 revenue ÷ 1,000 orders = <strong>AOV = ₹500</strong></div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-head">
+            <div><div class="metric-name">Contribution Margin</div><div class="metric-full">After Variable Costs</div></div>
+            <span class="badge badge-amber">Profitability</span>
+          </div>
+          <div class="metric-body">
+            <p class="metric-def">Revenue minus all variable costs (COGS, shipping, payment fees, returns). What's left to cover fixed costs and profit. Often more meaningful than gross margin for DA reporting.</p>
+            <div class="formula-box">CM = Revenue − (COGS + Variable Costs)</div>
+            <div class="example-row">Revenue ₹1,000 − Costs ₹600 = <strong>CM = ₹400 (40%)</strong></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- === CONVERSION === -->
+    <div class="section" id="section-conversion">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Conversion Metrics</div>
+          <div class="page-sub">How well you turn visitors into buyers</div>
+        </div>
+      </div>
+      <div class="metric-grid">
+
+        <div class="metric-card">
+          <div class="metric-head">
+            <div><div class="metric-name">CVR / CR</div><div class="metric-full">Conversion Rate</div></div>
+            <span class="badge badge-green">Core</span>
+          </div>
+          <div class="metric-body">
+            <p class="metric-def">Percentage of visitors who complete the desired action (purchase, sign-up, download). The single most important metric to optimize on your site.</p>
+            <div class="formula-box">CVR = (Conversions ÷ Total Visitors) × 100</div>
+            <div class="example-row">500 purchases ÷ 20,000 visitors = <strong>CVR = 2.5%</span></div>
+            <div class="benchmarks">
+              <span class="bm-chip bm-bad">Poor: &lt;1%</span>
+              <span class="bm-chip bm-warn">Average: 1–3%</span>
+              <span class="bm-chip bm-good">Good: 3%+</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-head">
+            <div><div class="metric-name">Bounce Rate</div><div class="metric-full">Single-page Session %</div></div>
+            <span class="badge badge-red">Friction</span>
+          </div>
+          <div class="metric-body">
+            <p class="metric-def">% of visitors who leave after viewing only one page without any interaction. High bounce = landing page mismatch, slow load, or irrelevant traffic. GA4 uses "engagement rate" now (inverse).</p>
+            <div class="formula-box">Bounce Rate = Single-page Sessions ÷ All Sessions × 100</div>
+            <div class="example-row">8,000 bounces ÷ 20,000 sessions = <strong>40% Bounce Rate</strong></div>
+            <div class="benchmarks">
+              <span class="bm-chip bm-good">Good: &lt;40%</span>
+              <span class="bm-chip bm-warn">Avg: 40–60%</span>
+              <span class="bm-chip bm-bad">High: &gt;70%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-head">
+            <div><div class="metric-name">Cart Abandonment Rate</div><div class="metric-full">Add-to-Cart → No Purchase</div></div>
+            <span class="badge badge-red">E-commerce</span>
+          </div>
+          <div class="metric-body">
+            <p class="metric-def">% of shoppers who add items to cart but don't complete purchase. Industry average is 70%+. Reducing this by even 5% can dramatically lift revenue.</p>
+            <div class="formula-box">CAR = (1 − Purchases ÷ Cart Additions) × 100</div>
+            <div class="example-row">100 carts, 30 purchases → <strong>70% Abandonment</strong></div>
+            <div class="benchmarks">
+              <span class="bm-chip bm-good">Great: &lt;60%</span>
+              <span class="bm-chip bm-warn">Avg: 65–75%</span>
+              <span class="bm-chip bm-bad">High: &gt;80%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-head">
+            <div><div class="metric-name">Funnel Drop-off</div><div class="metric-full">Stage-by-Stage Loss</div></div>
+            <span class="badge badge-accent">Funnel</span>
+          </div>
+          <div class="metric-body">
+            <p class="metric-def">At each funnel stage, what % of users proceed vs drop. Pinpointing the highest drop-off stage is the highest-leverage CRO opportunity.</p>
+            <div class="formula-box">Drop-off % = (Stage N − Stage N+1) ÷ Stage N × 100</div>
+            <div class="example-row">1000 → 200 checkout starts → <strong>80% drop at checkout entry</strong></div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-head">
+            <div><div class="metric-name">RPCV</div><div class="metric-full">Revenue Per Converting Visitor</div></div>
+            <span class="badge badge-accent">Value</span>
+          </div>
+          <div class="metric-body">
+            <p class="metric-def">Average revenue generated by each visitor who converts. Combines CVR × AOV in a single per-visitor value metric. Useful for paid traffic bid optimization.</p>
+            <div class="formula-box">RPCV = Total Revenue ÷ Converting Visitors</div>
+            <div class="example-row">₹5,00,000 ÷ 500 buyers = <strong>RPCV = ₹1,000</strong></div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-head">
+            <div><div class="metric-name">Time to Convert</div><div class="metric-full">Days to First Purchase</div></div>
+            <span class="badge badge-purple">Behaviour</span>
+          </div>
+          <div class="metric-body">
+            <p class="metric-def">Median number of days from first touch to first purchase. Critical for retargeting window settings and email nurture sequence length. Varies massively by product category.</p>
+            <div class="formula-box">Avg(Purchase Date − First Session Date)</div>
+            <div class="benchmarks">
+              <span class="bm-chip bm-good">Impulse: 0–2 days</span>
+              <span class="bm-chip bm-warn">Considered: 7–14 days</span>
+              <span class="bm-chip bm-bad">High-ticket: 30–90 days</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- === RETENTION === -->
+    <div class="section" id="section-retention">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Retention Metrics</div>
+          <div class="page-sub">How well you keep the customers you acquire</div>
+        </div>
+      </div>
+      <div class="metric-grid">
+
+        <div class="metric-card">
+          <div class="metric-head">
+            <div><div class="metric-name">Churn Rate</div><div class="metric-full">Customer Attrition Rate</div></div>
+            <span class="badge badge-red">Core</span>
+          </div>
+          <div class="metric-body">
+            <p class="metric-def">% of customers lost in a given period. The silent killer — a 5% monthly churn means losing 46% of customers per year. "Revenue churn" (MRR lost) is often more impactful than customer count churn.</p>
+            <div class="formula-box">Churn = Lost Customers ÷ Start-of-Period Customers × 100</div>
+            <div class="example-row">50 lost ÷ 1000 start = <strong>5% Monthly Churn</strong></div>
+            <div class="benchmarks">
+              <span class="bm-chip bm-good">SaaS good: &lt;2%/mo</span>
+              <span class="bm-chip bm-warn">E-com: 5–10%/mo normal</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-head">
+            <div><div class="metric-name">Retention Rate</div><div class="metric-full">Customer Survival %</div></div>
+            <span class="badge badge-green">Core</span>
+          </div>
+          <div class="metric-body">
+            <p class="metric-def">% of customers still active after a time period. Inverse of churn. Cohort-level retention curves reveal if your product has long-term value.</p>
+            <div class="formula-box">Retention = (End Customers − New) ÷ Start Customers × 100</div>
+            <div class="example-row">Start: 1,000 · End: 980 · New: 50 → <strong>93% Retention</strong></div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-head">
+            <div><div class="metric-name">NPS</div><div class="metric-full">Net Promoter Score</div></div>
+            <span class="badge badge-purple">Loyalty</span>
+          </div>
+          <div class="metric-body">
+            <p class="metric-def">Survey-based score measuring customer loyalty. "How likely are you to recommend us?" on a 0–10 scale. Promoters (9–10) minus Detractors (0–6) as a % of respondents.</p>
+            <div class="formula-box">NPS = % Promoters − % Detractors</div>
+            <div class="example-row">50% promoters − 20% detractors = <strong>NPS = +30</strong></div>
+            <div class="benchmarks">
+              <span class="bm-chip bm-bad">Poor: &lt;0</span>
+              <span class="bm-chip bm-warn">OK: 0–30</span>
+              <span class="bm-chip bm-good">Good: 30–70</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-head">
+            <div><div class="metric-name">Repeat Purchase Rate</div><div class="metric-full">Repurchase / Reorder Rate</div></div>
+            <span class="badge badge-green">E-com</span>
+          </div>
+          <div class="metric-body">
+            <p class="metric-def">% of customers who buy more than once. High RPR = strong product-market fit and good customer experience. A crucial signal for D2C brand health.</p>
+            <div class="formula-box">RPR = Repeat Customers ÷ Total Customers × 100</div>
+            <div class="example-row">300 repeat ÷ 1000 total = <strong>RPR = 30%</strong></div>
+            <div class="benchmarks">
+              <span class="bm-chip bm-bad">New brand: ~10–15%</span>
+              <span class="bm-chip bm-good">Mature: 25–40%+</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-head">
+            <div><div class="metric-name">CSAT</div><div class="metric-full">Customer Satisfaction Score</div></div>
+            <span class="badge badge-purple">Satisfaction</span>
+          </div>
+          <div class="metric-body">
+            <p class="metric-def">Post-interaction satisfaction score (usually 1–5). Measures specific touchpoints (support, delivery, product) unlike NPS which measures overall loyalty.</p>
+            <div class="formula-box">CSAT = (Satisfied Responses ÷ Total Responses) × 100</div>
+            <div class="example-row">400 happy ÷ 500 total = <strong>CSAT = 80%</strong></div>
+            <div class="benchmarks">
+              <span class="bm-chip bm-good">Good: &gt;75%</span>
+              <span class="bm-chip bm-bad">Poor: &lt;60%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-head">
+            <div><div class="metric-name">Win-back Rate</div><div class="metric-full">Lapsed Customer Recovery</div></div>
+            <span class="badge badge-amber">Recovery</span>
+          </div>
+          <div class="metric-body">
+            <p class="metric-def">% of churned/dormant customers successfully reactivated through win-back campaigns. Reactivation is typically 5–10× cheaper than acquiring new customers.</p>
+            <div class="formula-box">Win-back = Reactivated ÷ Targeted Lapsed × 100</div>
+            <div class="example-row">50 reactivated ÷ 500 targeted = <strong>10% Win-back</strong></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- === ENGAGEMENT === -->
+    <div class="section" id="section-engagement">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Engagement Metrics</div>
+          <div class="page-sub">How users interact with your product and content</div>
+        </div>
+      </div>
+      <div class="metric-grid">
+
+        <div class="metric-card">
+          <div class="metric-head">
+            <div><div class="metric-name">DAU / MAU</div><div class="metric-full">Daily / Monthly Active Users</div></div>
+            <span class="badge badge-purple">Activity</span>
+          </div>
+          <div class="metric-body">
+            <p class="metric-def">DAU/MAU ratio (stickiness) shows how often users return. 20%+ means strong daily habit. Facebook is 60%+; most apps are 10–20%.</p>
+            <div class="formula-box">Stickiness = DAU ÷ MAU × 100</div>
+            <div class="example-row">5,000 DAU ÷ 50,000 MAU = <strong>10% Stickiness</strong></div>
+            <div class="benchmarks">
+              <span class="bm-chip bm-bad">Low: &lt;10%</span>
+              <span class="bm-chip bm-warn">OK: 10–20%</span>
+              <span class="bm-chip bm-good">High: 20%+</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-head">
+            <div><div class="metric-name">Session Duration</div><div class="metric-full">Avg Time on Site/App</div></div>
+            <span class="badge badge-purple">Depth</span>
+          </div>
+          <div class="metric-body">
+            <p class="metric-def">Average time a user spends per session. Higher duration = deeper engagement, but context matters — a long time on a checkout page means friction, not engagement.</p>
+            <div class="formula-box">Avg Duration = Total Session Time ÷ Total Sessions</div>
+            <div class="benchmarks">
+              <span class="bm-chip bm-bad">Poor: &lt;1 min</span>
+              <span class="bm-chip bm-warn">Avg: 2–4 min</span>
+              <span class="bm-chip bm-good">Engaged: 4+ min</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-head">
+            <div><div class="metric-name">Pages per Session</div><div class="metric-full">Depth of Browsing</div></div>
+            <span class="badge badge-accent">Browse</span>
+          </div>
+          <div class="metric-body">
+            <p class="metric-def">Average number of pages viewed in a session. High pages/session = exploratory browsing or good internal linking. Low = either found what they needed fast, or bounced.</p>
+            <div class="formula-box">PPS = Total Pageviews ÷ Total Sessions</div>
+            <div class="example-row">60,000 pageviews ÷ 20,000 sessions = <strong>3.0 pages/session</strong></div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-head">
+            <div><div class="metric-name">Social Engagement Rate</div><div class="metric-full">Interactions per Impression</div></div>
+            <span class="badge badge-purple">Social</span>
+          </div>
+          <div class="metric-body">
+            <p class="metric-def">% of people who interact (like, comment, share, save) with your content. Instagram saves are the highest-quality signal — they signal the content was worth keeping.</p>
+            <div class="formula-box">ER = (Likes + Comments + Shares) ÷ Impressions × 100</div>
+            <div class="benchmarks">
+              <span class="bm-chip bm-bad">Low: &lt;1%</span>
+              <span class="bm-chip bm-warn">Avg: 1–3%</span>
+              <span class="bm-chip bm-good">Strong: 3–6%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-head">
+            <div><div class="metric-name">Email Open Rate</div><div class="metric-full">Opens ÷ Delivered</div></div>
+            <span class="badge badge-accent">Email</span>
+          </div>
+          <div class="metric-body">
+            <p class="metric-def">% of delivered emails that were opened. Subject line quality and list hygiene are the main levers. Note: Apple MPP inflates open rates since iOS15 — track clicks instead.</p>
+            <div class="formula-box">Open Rate = Opens ÷ Delivered Emails × 100</div>
+            <div class="benchmarks">
+              <span class="bm-chip bm-bad">Poor: &lt;15%</span>
+              <span class="bm-chip bm-warn">Avg: 20–25%</span>
+              <span class="bm-chip bm-good">Good: 30%+</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-head">
+            <div><div class="metric-name">CTOR</div><div class="metric-full">Click-to-Open Rate</div></div>
+            <span class="badge badge-accent">Email</span>
+          </div>
+          <div class="metric-body">
+            <p class="metric-def">% of people who clicked after opening. More reliable than raw CTR because it removes list quality as a variable. Measures how well your email body/CTA performs.</p>
+            <div class="formula-box">CTOR = Unique Clicks ÷ Unique Opens × 100</div>
+            <div class="example-row">200 clicks ÷ 1,000 opens = <strong>CTOR = 20%</strong></div>
+            <div class="benchmarks">
+              <span class="bm-chip bm-good">Good: 15–25%</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- === FUNNEL === -->
+    <div class="section" id="section-funnel">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Marketing Funnel</div>
+          <div class="page-sub">TOFU → MOFU → BOFU — awareness to purchase</div>
+        </div>
+      </div>
+
+      <div class="funnel-section">
+        <div class="section-title">The Full Conversion Funnel</div>
+        <div class="section-sub">Example: 10,000 impressions entering a D2C e-commerce funnel</div>
+        <div class="funnel-wrap">
+          <div class="funnel-canvas-wrap">
+            <canvas id="funnelChart" height="360"></canvas>
+          </div>
+          <div class="funnel-legend" id="funnelLegend"></div>
+        </div>
+      </div>
+
+      <!-- Funnel stages explanation -->
+      <div class="section-title" style="margin-bottom:8px">Funnel Stages Explained</div>
+      <div class="section-sub" style="margin-bottom:16px">TOFU = Top of Funnel · MOFU = Middle · BOFU = Bottom</div>
+      <div class="metric-grid">
+        <div class="metric-card">
+          <div class="metric-head">
+            <div><div class="metric-name">TOFU</div><div class="metric-full">Awareness / Discovery</div></div>
+            <span class="badge badge-purple">Top</span>
+          </div>
+          <div class="metric-body">
+            <p class="metric-def">First touchpoint. Goal: reach as many relevant people as possible. Metrics: Impressions, CPM, Reach, CTR. Channels: Meta/Google Display, YouTube, Influencer, SEO (informational).</p>
+            <div class="formula-box">Impression → Click (CTR%) → Website Visit</div>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-head">
+            <div><div class="metric-name">MOFU</div><div class="metric-full">Consideration / Interest</div></div>
+            <span class="badge badge-amber">Middle</span>
+          </div>
+          <div class="metric-body">
+            <p class="metric-def">Visitor is aware, now you need to build intent. Metrics: Pages/session, Time on Site, Lead form submissions, Email sign-ups. Channels: Retargeting, Email nurture, Product pages.</p>
+            <div class="formula-box">Visit → Engagement → Lead / Wishlist</div>
+          </div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-head">
+            <div><div class="metric-name">BOFU</div><div class="metric-full">Decision / Purchase</div></div>
+            <span class="badge badge-green">Bottom</span>
+          </div>
+          <div class="metric-body">
+            <p class="metric-def">High-intent stage. Goal: remove friction and close. Metrics: CVR, Cart Abandonment, AOV, Checkout completion rate. Channels: Search retargeting, abandoned cart email, promo codes.</p>
+            <div class="formula-box">Cart Add → Checkout → Purchase → Post-purchase</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- === GLOSSARY === -->
+    <div class="section" id="section-glossary">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Marketing Glossary</div>
+          <div class="page-sub">Every term a DA in marketing needs to know</div>
+        </div>
+      </div>
+      <div class="glossary-filter">
+        <button class="gf-btn active" onclick="filterGlossary('all',this)">All</button>
+        <button class="gf-btn" onclick="filterGlossary('acquisition',this)">Acquisition</button>
+        <button class="gf-btn" onclick="filterGlossary('revenue',this)">Revenue</button>
+        <button class="gf-btn" onclick="filterGlossary('conversion',this)">Conversion</button>
+        <button class="gf-btn" onclick="filterGlossary('retention',this)">Retention</button>
+        <button class="gf-btn" onclick="filterGlossary('attribution',this)">Attribution</button>
+        <button class="gf-btn" onclick="filterGlossary('email',this)">Email</button>
+        <button class="gf-btn" onclick="filterGlossary('social',this)">Social</button>
+      </div>
+      <div class="glossary-grid" id="glossaryGrid"></div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// === Theme ===
+const root = document.documentElement;
+const btn = document.getElementById('themeBtn');
+function toggleTheme() {
+  const cur = root.getAttribute('data-theme');
+  if (!cur || cur === 'light') { root.setAttribute('data-theme','dark'); btn.textContent='☀️ Light'; }
+  else { root.setAttribute('data-theme','light'); btn.textContent='🌙 Dark'; }
+}
+
+// === Navigation ===
+function switchSection(id, el) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('section-'+id).classList.add('active');
+  document.querySelectorAll('.nav-item, .mob-tab').forEach(n => n.classList.remove('active'));
+  // activate all matching tabs/nav items with same onclick
+  document.querySelectorAll('.nav-item, .mob-tab').forEach(n => {
+    if ((n.getAttribute('onclick')||'').includes("'"+id+"'")) n.classList.add('active');
+  });
+  if (id === 'funnel') setTimeout(drawFunnel, 50);
+  if (id === 'overview') setTimeout(drawChannelChart, 50);
+}
+
+// === Channel chart (bar) ===
+function drawChannelChart() {
+  const canvas = document.getElementById('channelChart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.offsetWidth; const H = 200;
+  canvas.width = W; canvas.height = H;
+
+  const st = getComputedStyle(root);
+  const fg2 = st.getPropertyValue('--fg-2').trim();
+  const fg3 = st.getPropertyValue('--fg-3').trim();
+  const border = st.getPropertyValue('--border').trim();
+  const accent = st.getPropertyValue('--accent').trim();
+  const green = st.getPropertyValue('--green').trim();
+  const amber = st.getPropertyValue('--amber').trim();
+  const purple = st.getPropertyValue('--purple').trim();
+  const red = st.getPropertyValue('--red').trim();
+  const bg = st.getPropertyValue('--surface-2').trim();
+
+  const channels = ['Google Search','Meta Ads','Email','SEO Organic','Influencer','Direct'];
+  const cac = [380, 520, 120, 180, 650, 90];
+  const roas = [5.2, 3.8, 11, 8.5, 2.1, 14];
+  const colors = [accent, '#e05c8c', amber, green, purple, '#22bec0'];
+
+  const margin = { top: 20, right: 10, bottom: 50, left: 50 };
+  const innerW = W - margin.left - margin.right;
+  const innerH = H - margin.top - margin.bottom;
+
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = bg;
+  ctx.beginPath();
+  ctx.roundRect(0, 0, W, H, 8);
+  ctx.fill();
+
+  const maxCAC = 700;
+  const bw = innerW / channels.length;
+  const bpad = bw * 0.25;
+
+  // Gridlines
+  ctx.strokeStyle = border; ctx.lineWidth = 1;
+  [0,0.25,0.5,0.75,1].forEach(t => {
+    const y = margin.top + innerH * (1 - t);
+    ctx.beginPath(); ctx.moveTo(margin.left, y); ctx.lineTo(margin.left + innerW, y); ctx.stroke();
+    ctx.fillStyle = fg3; ctx.font = '10px DM Sans,sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText('₹'+Math.round(maxCAC*t), margin.left - 5, y + 3);
+  });
+
+  // Y axis label
+  ctx.save(); ctx.translate(12, margin.top + innerH/2);
+  ctx.rotate(-Math.PI/2);
+  ctx.fillStyle = fg3; ctx.font = '10px DM Sans,sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText('CAC (₹)', 0, 0); ctx.restore();
+
+  channels.forEach((ch, i) => {
+    const x = margin.left + i * bw + bpad/2;
+    const bh = (cac[i] / maxCAC) * innerH;
+    const y = margin.top + innerH - bh;
+
+    // Bar
+    ctx.fillStyle = colors[i] + '99';
+    ctx.beginPath(); ctx.roundRect(x, y, bw - bpad, bh, [4,4,0,0]); ctx.fill();
+    ctx.fillStyle = colors[i];
+    ctx.beginPath(); ctx.roundRect(x, y, bw - bpad, Math.min(bh, 4), [4,4,0,0]); ctx.fill();
+
+    // ROAS dot
+    const roasPct = Math.min(roas[i] / 15, 1);
+    const dotY = margin.top + innerH * (1 - roasPct);
+    ctx.beginPath(); ctx.arc(x + (bw-bpad)/2, dotY, 5, 0, 2*Math.PI);
+    ctx.fillStyle = colors[i]; ctx.fill();
+    ctx.fillStyle = st.getPropertyValue('--surface').trim(); ctx.beginPath();
+    ctx.arc(x + (bw-bpad)/2, dotY, 2.5, 0, 2*Math.PI); ctx.fill();
+
+    // Label
+    ctx.fillStyle = fg2; ctx.font = '10px DM Sans,sans-serif'; ctx.textAlign = 'center';
+    const lx = x + (bw-bpad)/2;
+    ctx.fillText('₹'+cac[i], lx, y - 4);
+    ctx.save(); ctx.translate(lx, margin.top + innerH + 10);
+    ctx.rotate(-0.4);
+    ctx.textAlign = 'right'; ctx.font = '9.5px DM Sans,sans-serif'; ctx.fillStyle = fg3;
+    ctx.fillText(ch, 0, 0); ctx.restore();
+  });
+
+  // Legend
+  ctx.fillStyle = fg3; ctx.font = '10px DM Sans,sans-serif'; ctx.textAlign = 'left';
+  ctx.fillText('Bar = CAC (₹)   ● = ROAS (0–15×)', margin.left, 14);
+}
+
+// === Funnel chart ===
+function drawFunnel() {
+  const canvas = document.getElementById('funnelChart');
+  if (!canvas) return;
+  const W = canvas.offsetWidth; const H = 360;
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  const st = getComputedStyle(root);
+  const fg = st.getPropertyValue('--fg').trim();
+  const fg2 = st.getPropertyValue('--fg-2').trim();
+  const fg3 = st.getPropertyValue('--fg-3').trim();
+  const border = st.getPropertyValue('--border').trim();
+  const bg = st.getPropertyValue('--surface-2').trim();
+  ctx.clearRect(0,0,W,H);
+
+  const stages = [
+    { label:'Impressions', val:10000, color:'#6d7eff' },
+    { label:'Ad Clicks', val:350, color:'#5b87ff' },
+    { label:'Website Visits', val:280, color:'#3dbdf5' },
+    { label:'Product Views', val:180, color:'#22c595' },
+    { label:'Add to Cart', val:90, color:'#a3e635' },
+    { label:'Checkout Start', val:55, color:'#f59e0b' },
+    { label:'Purchases', val:32, color:'#f04f6a' },
+  ];
+
+  const legend = document.getElementById('funnelLegend');
+  legend.innerHTML = '';
+  stages.forEach((s, i) => {
+    const rate = i === 0 ? '—' : ((s.val / stages[i-1].val * 100).toFixed(1) + '% pass');
+    legend.innerHTML += `<div class="funnel-legend-item">
+      <div class="fl-dot" style="background:${s.color}"></div>
+      <div class="fl-name">${s.label}</div>
+      <div><div class="fl-val">${s.val.toLocaleString()}</div><div class="fl-rate">${rate}</div></div>
+    </div>`;
+  });
+
+  const maxW = W * 0.72;
+  const minW = W * 0.12;
+  const stH = (H - 20) / stages.length;
+  const gap = 3;
+
+  stages.forEach((s, i) => {
+    const pct = s.val / stages[0].val;
+    const w = minW + (maxW - minW) * pct;
+    const x = (W - w) / 2;
+    const y = 10 + i * stH;
+    const h = stH - gap;
+
+    ctx.fillStyle = s.color + 'cc';
+    ctx.beginPath();
+    ctx.roundRect(x, y, w, h, 4);
+    ctx.fill();
+
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 11px DM Sans,sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(s.label, W/2, y + h/2 + 4);
+  });
+}
+
+// === Glossary data ===
+const terms = [
+  { abbr:'CAC', full:'Customer Acquisition Cost', cat:'acquisition', def:'Total marketing + sales spend ÷ new customers. The core cost metric.' },
+  { abbr:'CPC', full:'Cost Per Click', cat:'acquisition', def:'Ad spend ÷ total clicks. How much each visitor from ads costs you.' },
+  { abbr:'CPM', full:'Cost Per Mille', cat:'acquisition', def:'Cost per 1,000 impressions. Used for awareness/reach campaigns.' },
+  { abbr:'CTR', full:'Click-Through Rate', cat:'acquisition', def:'Clicks ÷ impressions. Measures ad/creative relevance.' },
+  { abbr:'CPL', full:'Cost Per Lead', cat:'acquisition', def:'Ad spend ÷ leads generated. Pre-conversion efficiency.' },
+  { abbr:'ROAS', full:'Return on Ad Spend', cat:'revenue', def:'Revenue ÷ ad spend. How much ₹ you earn per ₹ spent on ads.' },
+  { abbr:'ROI', full:'Return on Investment', cat:'revenue', def:'Net profit ÷ total cost × 100. True profitability after all costs.' },
+  { abbr:'LTV / CLV', full:'Customer Lifetime Value', cat:'revenue', def:'AOV × frequency × lifespan. Total value of a customer relationship.' },
+  { abbr:'MER', full:'Marketing Efficiency Ratio', cat:'revenue', def:'Blended ROAS across all channels including organic. More accurate than ROAS.' },
+  { abbr:'AOV', full:'Average Order Value', cat:'revenue', def:'Revenue ÷ orders. Average transaction size.' },
+  { abbr:'CVR', full:'Conversion Rate', cat:'conversion', def:'Conversions ÷ visitors × 100. % of visitors who complete the goal.' },
+  { abbr:'CAR', full:'Cart Abandonment Rate', cat:'conversion', def:'% of cart additions that don\'t result in purchase. Usually 65–75%.' },
+  { abbr:'CRO', full:'Conversion Rate Optimization', cat:'conversion', def:'Process of improving CVR through A/B tests, UX changes, copy changes.' },
+  { abbr:'RPCV', full:'Revenue Per Converting Visitor', cat:'conversion', def:'Revenue ÷ converting visitors. Combines CVR + AOV into one.' },
+  { abbr:'A/B Test', full:'Split Test', cat:'conversion', def:'Comparing two variants (control vs treatment) to find which performs better.' },
+  { abbr:'NPS', full:'Net Promoter Score', cat:'retention', def:'% Promoters − % Detractors. Measures customer loyalty on 0–10 scale.' },
+  { abbr:'CSAT', full:'Customer Satisfaction Score', cat:'retention', def:'% of customers rating experience positively. Post-interaction survey.' },
+  { abbr:'RPR', full:'Repeat Purchase Rate', cat:'retention', def:'Repeat customers ÷ total customers. Measures brand loyalty in e-com.' },
+  { abbr:'Churn', full:'Churn Rate', cat:'retention', def:'% of customers lost in a period. The anti-retention metric.' },
+  { abbr:'Cohort', full:'Cohort Analysis', cat:'retention', def:'Grouping users by acquisition date and tracking their behaviour over time.' },
+  { abbr:'First-touch', full:'First-Touch Attribution', cat:'attribution', def:'100% credit to the first channel a user interacted with.' },
+  { abbr:'Last-touch', full:'Last-Touch Attribution', cat:'attribution', def:'100% credit to the final channel before conversion. Favours bottom-funnel.' },
+  { abbr:'Linear', full:'Linear Attribution', cat:'attribution', def:'Equal credit to all touchpoints in the journey.' },
+  { abbr:'Time-decay', full:'Time-Decay Attribution', cat:'attribution', def:'More credit to touchpoints closer to conversion. Middle-ground model.' },
+  { abbr:'Data-driven', full:'Data-Driven Attribution', cat:'attribution', def:'ML model assigns credit based on actual incremental impact per touchpoint.' },
+  { abbr:'UTM', full:'Urchin Tracking Module', cat:'attribution', def:'URL parameters (utm_source, utm_medium, utm_campaign) for tracking traffic source.' },
+  { abbr:'Open Rate', full:'Email Open Rate', cat:'email', def:'Opens ÷ delivered × 100. Apple MPP inflates this — prefer CTOR.' },
+  { abbr:'CTOR', full:'Click-to-Open Rate', cat:'email', def:'Clicks ÷ opens × 100. How effective is your email body/CTA.' },
+  { abbr:'Unsubscribe Rate', full:'List Unsubscribe Rate', cat:'email', def:'Unsubs ÷ delivered. High rate = irrelevant content or frequency.' },
+  { abbr:'Deliverability', full:'Email Deliverability', cat:'email', def:'% of emails that actually reach inbox vs spam/bounce.' },
+  { abbr:'ER', full:'Engagement Rate', cat:'social', def:'(Likes + Comments + Shares) ÷ Impressions × 100.' },
+  { abbr:'CPE', full:'Cost Per Engagement', cat:'social', def:'Ad spend ÷ total engagements. Cost of each interaction.' },
+  { abbr:'Reach', full:'Unique Reach', cat:'social', def:'Number of unique people who saw your content. Distinct from impressions.' },
+  { abbr:'Share of Voice', full:'SOV', cat:'social', def:'Your brand\'s mentions ÷ total industry mentions. Market presence measure.' },
+  { abbr:'UGC', full:'User Generated Content', cat:'social', def:'Content created by customers (reviews, posts, videos) about your brand.' },
+  { abbr:'Impressions', full:'Ad/Post Impressions', cat:'social', def:'Total times your ad/post was displayed (including repeat views of same user).' },
+  { abbr:'TOFU', full:'Top of Funnel', cat:'acquisition', def:'Awareness stage. Broad audience, educational content, CPM/reach optimised.' },
+  { abbr:'MOFU', full:'Middle of Funnel', cat:'conversion', def:'Consideration stage. Retargeting, nurture emails, product deep-dives.' },
+  { abbr:'BOFU', full:'Bottom of Funnel', cat:'conversion', def:'Decision stage. High-intent, offer-led, CVR optimised.' },
+  { abbr:'PMAX', full:'Performance Max', cat:'acquisition', def:'Google\'s AI-driven campaign type that runs across all Google channels automatically.' },
+  { abbr:'Lookalike', full:'Lookalike Audience', cat:'acquisition', def:'Meta/Google audience that mirrors your existing customer base. Great for scaling.' },
+  { abbr:'Retargeting', full:'Remarketing', cat:'conversion', def:'Showing ads to users who previously visited your site/app. Higher CVR, lower CAC.' },
+  { abbr:'ARPU', full:'Average Revenue Per User', cat:'revenue', def:'Total revenue ÷ active users. Common in SaaS and subscription products.' },
+  { abbr:'MRR / ARR', full:'Monthly/Annual Recurring Revenue', cat:'revenue', def:'Predictable subscription revenue. Foundation of SaaS business health.' },
+  { abbr:'Payback Period', full:'CAC Payback Period', cat:'revenue', def:'How many months to recover CAC from a customer\'s gross margin. Target: &lt;12 months.' },
+];
+
+function renderGlossary(cat) {
+  const grid = document.getElementById('glossaryGrid');
+  const filtered = cat === 'all' ? terms : terms.filter(t => t.cat === cat);
+  const catColors = { acquisition:'badge-accent', revenue:'badge-green', conversion:'badge-amber', retention:'badge-purple', attribution:'badge-red', email:'badge-accent', social:'badge-purple' };
+  grid.innerHTML = filtered.map(t => `
+    <div class="glossary-card">
+      <div class="gc-abbr">${t.abbr} <span class="badge ${catColors[t.cat]||'badge-accent'}" style="font-size:10px;padding:2px 7px">${t.cat}</span></div>
+      <div class="gc-full">${t.full}</div>
+      <div class="gc-def">${t.def}</div>
+    </div>
+  `).join('');
+}
+
+function filterGlossary(cat, el) {
+  document.querySelectorAll('.gf-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  renderGlossary(cat);
+}
+
+// Init
+renderGlossary('all');
+setTimeout(drawChannelChart, 100);
+
+// Redraw on resize
+window.addEventListener('resize', () => {
+  const active = document.querySelector('.section.active');
+  if (active && active.id === 'section-overview') drawChannelChart();
+  if (active && active.id === 'section-funnel') drawFunnel();
+});
+</script>
